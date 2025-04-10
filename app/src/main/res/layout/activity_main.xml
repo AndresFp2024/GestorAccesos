@@ -28,7 +28,7 @@
         <Button
             android:id="@+id/btn_entrar"
             android:layout_width="match_parent"
-            android:layout_height="118dp"
+            android:layout_height="131dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="40dp"
             android:layout_marginRight="40dp"
