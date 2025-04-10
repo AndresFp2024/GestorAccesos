@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var txt_nombre:TextInputEditText
     lateinit var txt_acceso:TextInputEditText
     lateinit var txt_mensaje: TextView
+    lateinit var txt_mensaje2: TextView
     lateinit var usuariosArray:List<Usuario>
     lateinit var rv_lista:RecyclerView
     lateinit var ll_inicio:LinearLayout
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     var iniciado:Boolean=false
     var idUsuario:Long = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +67,8 @@ class MainActivity : AppCompatActivity() {
     private fun initControlsUi() {
         txt_nombre = findViewById(R.id.txt_nombre)
         txt_acceso = findViewById(R.id.txt_acceso)
-        txt_mensaje = findViewById(R.id.txt_mansaje)
+        txt_mensaje = findViewById(R.id.txt_mensaje)
+        txt_mensaje2 = findViewById(R.id.txt_mensaje2)
         rv_lista = findViewById(R.id.rv_lista)
         ll_inicio = findViewById(R.id.ll_inicio)
         ll_principal = findViewById(R.id.ll_principal)
@@ -74,6 +77,10 @@ class MainActivity : AppCompatActivity() {
         btn_cancelar = findViewById(R.id.btn_cancelar)
         btn_eliminar = findViewById(R.id.btn_eliminar)
         btn_entrar = findViewById(R.id.btn_entrar)
+
+        val txt_usuario: TextInputEditText = findViewById(R.id.txt_usuario)
+        val txt_password: TextInputEditText = findViewById(R.id.txt_password)
+
 
         btn_cancelar.visibility = View.GONE
         btn_guardar_cambios.visibility = View.GONE
@@ -100,13 +107,20 @@ class MainActivity : AppCompatActivity() {
             btn_guardar.visibility = View.GONE
         }
     }
-    fun entrar(v: View) {
-        val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
-        prefs.edit().putBoolean("iniciado", true).apply()
+    fun entrar(view: View) {
+        val usuario = findViewById<TextInputEditText>(R.id.txt_usuario).text.toString()
+        val password = findViewById<TextInputEditText>(R.id.txt_password).text.toString()
 
-        ll_principal.visibility = View.VISIBLE
-        ll_inicio.visibility = View.GONE
+        if (usuario == "admin" && password == "admin") {
+            ll_inicio.visibility = View.GONE
+            ll_principal.visibility = View.VISIBLE
+            iniciado = true
+        } else {
+            txt_mensaje2.text = "Credenciales incorrectas"
+            txt_mensaje.setTextColor(Color.RED)
+        }
     }
+
 
     fun cancelar(v:View){
         startActivity((Intent(applicationContext,MainActivity::class.java)))
@@ -168,27 +182,37 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun eliminar(v:View){
-        GlobalScope.launch {
-            base.usuarioDao().delete(
-                Usuario(
-                    id = idUsuario,
-                    nombre = txt_nombre.text.toString(),
-                    nivelAcceso = txt_acceso.text.toString().toInt()
-                )
-            )
-            runOnUiThread{
-                txt_mensaje.setText("¡Eliminado con éxito!")
-                txt_mensaje.setTextColor(Color.GREEN)
-                limpiarCampos()
+    fun eliminar(v: View) {
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Confirmar eliminación")
+            .setMessage("¿Seguro que desea eliminar al usuario?")
+            .setPositiveButton("Sí") { _, _ ->
+                GlobalScope.launch {
+                    base.usuarioDao().delete(
+                        Usuario(
+                            id = idUsuario,
+                            nombre = txt_nombre.text.toString(),
+                            nivelAcceso = txt_acceso.text.toString().toInt()
+                        )
+                    )
+                    runOnUiThread {
+                        txt_mensaje.setText("¡Eliminado con éxito!")
+                        txt_mensaje.setTextColor(Color.GREEN)
+                        limpiarCampos()
 
-                btn_cancelar.visibility = View.GONE
-                btn_eliminar.visibility = View.GONE
-                btn_guardar_cambios.visibility = View.GONE
-                btn_guardar.visibility = View.VISIBLE
+                        btn_cancelar.visibility = View.GONE
+                        btn_eliminar.visibility = View.GONE
+                        btn_guardar_cambios.visibility = View.GONE
+                        btn_guardar.visibility = View.VISIBLE
+                    }
+                }
             }
-        }
+            .setNegativeButton("Cancelar", null)
+            .create()
+
+        dialog.show()
     }
+
 
     private fun limpiarCampos() {
         txt_nombre.text?.clear()
