@@ -122,35 +122,47 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun cancelar(v:View){
-        startActivity((Intent(applicationContext,MainActivity::class.java)))
-        finish()
+    fun cancelar(v: View) {
+        limpiarCampos()
+
+        ll_inicio.visibility = View.GONE
+        ll_principal.visibility = View.VISIBLE
+
+        btn_guardar.visibility = View.VISIBLE
+        btn_guardar_cambios.visibility = View.GONE
+        btn_eliminar.visibility = View.GONE
+        btn_cancelar.visibility = View.GONE
+
+        txt_mensaje.text = ""
     }
 
-    fun guardar(v:View){
-        if(txt_nombre.text.toString().length<2){
-            txt_nombre.error = "Debe ingresar un nombre válido"
-        } else if(txt_acceso.text.toString().isEmpty()||
-            txt_acceso.text.toString().toIntOrNull() == null){
-            txt_acceso.error = "Debe ingresar un número válido"
-        } else {
-            GlobalScope.launch {
-                base.usuarioDao().insert(
-                    Usuario(
-                        nombre = txt_nombre.text.toString(),
-                        nivelAcceso = txt_acceso.text.toString().toInt()
-                    )
-                )
-                runOnUiThread{
-                    txt_mensaje.setText("¡Guardado con éxito!")
-                    txt_mensaje.setTextColor(Color.GREEN)
-                    limpiarCampos()
-                }
 
+    fun guardar(view: View) {
+        val nombre = txt_nombre.text.toString()
+        val acceso = txt_acceso.text.toString()
 
+        if (nombre.isBlank() || acceso.isBlank()) {
+            txt_mensaje.text = "Completa todos los campos"
+            txt_mensaje.setTextColor(Color.RED)
+            return
+        }
+
+        val usuario = Usuario(
+            nombre = nombre,
+            nivelAcceso = acceso.toInt()
+        )
+
+        GlobalScope.launch {
+            base.usuarioDao().insert(usuario)
+            runOnUiThread {
+                txt_mensaje.text = "Usuario guardado"
+                txt_mensaje.setTextColor(Color.GREEN)
+                limpiarCampos()
+                llenarLista() // ✅ Esto recarga la lista
             }
         }
     }
+
 
     fun guardarCambios(v:View){
         if(txt_nombre.text.toString().length<2){
@@ -175,6 +187,8 @@ class MainActivity : AppCompatActivity() {
                     btn_eliminar.visibility = View.GONE
                     btn_guardar_cambios.visibility = View.GONE
                     btn_guardar.visibility = View.VISIBLE
+
+                    llenarLista()
                 }
 
 
@@ -219,27 +233,29 @@ class MainActivity : AppCompatActivity() {
         txt_acceso.text?.clear()
     }
 
-    fun llenarLista(){
-        try {
-            GlobalScope.launch {
-                val resultado = base.usuarioDao().getAll()
-                runOnUiThread {
-                    resultado.observe(this@MainActivity){
-                        usuariosArray = arrayListOf()
-                        usuariosArray = it
+    private fun llenarLista() {
+        GlobalScope.launch {
+            usuariosArray = base.usuarioDao().getAll()
+            runOnUiThread {
+                rv_lista.layoutManager = LinearLayoutManager(this@MainActivity)
+                rv_lista.adapter = UsuarioAdapter(usuariosArray) { usuario ->
+                    // Al hacer clic en un usuario, se llenan los campos y se muestran los botones de edición
+                    txt_nombre.setText(usuario.nombre)
+                    txt_acceso.setText(usuario.nivelAcceso.toString())
+                    idUsuario = usuario.id
 
-                        val adaptador = UsuarioAdapter(usuariosArray)
-                        rv_lista.layoutManager = LinearLayoutManager(applicationContext)
-                        rv_lista.adapter = adaptador
-                    }
+                    ll_inicio.visibility = View.GONE
+                    ll_principal.visibility = View.VISIBLE
+
+                    btn_guardar.visibility = View.GONE
+                    btn_guardar_cambios.visibility = View.VISIBLE
+                    btn_eliminar.visibility = View.VISIBLE
+                    btn_cancelar.visibility = View.VISIBLE
                 }
-
             }
-        } catch (e:Exception){
-            txt_mensaje.text=e.message
-            txt_mensaje.setTextColor(Color.RED)
         }
     }
+
 
     fun salir(v: View) {
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE)

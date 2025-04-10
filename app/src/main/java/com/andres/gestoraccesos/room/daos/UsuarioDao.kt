@@ -20,7 +20,7 @@ interface UsuarioDao {
         suspend fun delete(usuario: Usuario)
 
         @Query("SELECT * FROM usuario")
-        fun getAll():LiveData<List<Usuario>>
+        suspend fun getAll(): List<Usuario>
 
         @Query("SELECT * FROM usuario WHERE id = :id")
         fun getById(id:Long):LiveData<List<Usuario>>
