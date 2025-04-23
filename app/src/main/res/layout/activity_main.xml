@@ -1,190 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5	"
-    android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".MainActivity">
-
-    <LinearLayout
-        android:id="@+id/ll_inicio"
-        android:layout_width="match_parent"
-        android:layout_height="694dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/titulo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="100dp"
-            android:text="GESTOR DE ACCESOS"
-            android:textAlignment="center"
-            android:textSize="60sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txt_usuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Usuario" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txt_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Contraseña" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/txt_mensaje2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/btn_entrar"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="40dp"
-            android:backgroundTint="#1E88E5	"
-            android:onClick="entrar"
-            android:text="Log In"
-            android:textSize="34sp" />
-
-    </LinearLayout>
+    android:background="#F5F5F5"
+    >
 
     <LinearLayout
         android:id="@+id/ll_principal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="48dp"
+        >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="77dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="#F5F5F5		"
-                android:text="Gestor de Accesos"
-                android:textAlignment="center"
-                android:textColor="#111827"
-                android:textSize="34sp" />
-
-            <Button
-                android:id="@+id/btn_salir"
-                android:layout_width="69dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:backgroundTint="#7C1717"
-                android:onClick="salir"
-                android:text="Log Out"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical"
-            app:boxBackgroundMode="outline">
+            android:text="Gestor de Accesos"
+            android:textSize="24sp"
+            android:textAlignment="center"
+            android:layout_marginBottom="24dp" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txt_nombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#BBDEFB"
-                android:hint="Ingrese nombre"
-                android:padding="20dp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+            android:id="@+id/txt_nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
+            android:hint="Ingrese nombre"
+            android:background="#BBDEFB"
+            android:padding="16dp" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txt_acceso"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#BBDEFB"
-                android:hint="Ingrese Nivel de Acceso"
-                android:padding="20dp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+        <EditText
+            android:id="@+id/txt_acceso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ingrese Nivel de Acceso"
+            android:background="#BBDEFB"
+            android:padding="16dp"
+            android:layout_marginTop="12dp" />
 
         <Button
             android:id="@+id/btn_guardar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#1E88E5		"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#1E88E5"
             android:onClick="guardar"
             android:text="Guardar"
-            android:textColor="#FFFFFF	" />
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/btn_guardar_cambios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#1E88E5	"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#1E88E5"
             android:onClick="guardarCambios"
             android:text="Guardar cambios"
-            android:textColor="#FFFFFF	" />
+            android:textColor="#FFFFFF"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_eliminar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:backgroundTint="#B72E3B"
             android:onClick="eliminar"
             android:text="Eliminar"
-            android:textColor="#FFFFFF	" />
+            android:textColor="#FFFFFF"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_cancelar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:backgroundTint="#5B6165"
             android:onClick="cancelar"
             android:text="Cancelar"
-            android:textColor="#FFFFFF	" />
+            android:textColor="#FFFFFF"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_ver_historial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#607D8B"
+            android:onClick="verHistorial"
+            android:text="Ver historial"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cerrar sesión"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#B71C1C"
+            android:textColor="#FFFFFF"
+            android:onClick="logout" />
 
         <TextView
             android:id="@+id/txt_mensaje"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="#2E7D32" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_lista"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_usuarios" />
+            android:layout_marginTop="16dp" />
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
